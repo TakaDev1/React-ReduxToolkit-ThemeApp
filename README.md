@@ -1,32 +1,151 @@
-# React + TypeScript + Vite
+# React-ReduxToolkit-ThemeApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+ReactとRedux Toolkitを使用して、ライトテーマとダークテーマを切り替える練習用アプリです。
 
-Currently, two official plugins are available:
+## 概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Redux Toolkitでテーマの状態を管理し、ボタン操作によってライトテーマとダークテーマを切り替えます。
 
-## React Compiler
+テーマの状態管理にはRedux Toolkitの`createSlice`を使用し、コンポーネントから`dispatch`で状態を変更します。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+また、`useSelector`でRedux Storeに保持されている現在のテーマ状態を取得し、Tailwind CSSのクラスを切り替えて画面に反映します。
 
-## Expanding the Oxlint configuration
+## 使用技術
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+* React
+* TypeScript
+* Redux Toolkit
+* React Redux
+* Tailwind CSS
+* Vite
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
+## 主な機能
+
+* ライトテーマ / ダークテーマの切り替え
+* Redux Storeによるテーマ状態管理
+* `toggleTheme` Actionによるテーマ変更
+* `useSelector`による現在のテーマ取得
+* Tailwind CSSによるテーマ別スタイル適用
+
+## ディレクトリ構成
+
+```text
+src/
+├── app/
+│   └── store.ts
+├── features/
+│   └── theme/
+│       ├── components/
+│       │   ├── ThemeToggle.tsx
+│       │   └── DisplayTheme.tsx
+│       ├── slices/
+│       │   └── ThemeSlice.ts
+│       └── types/
+│           └── ThemeType.ts
+├── App.tsx
+├── index.css
+└── main.tsx
+```
+
+## Redux Toolkitの構成
+
+### ThemeType
+
+テーマの状態をTypeScriptで定義します。
+
+```ts
+export interface ThemeType {
+  darkMode: boolean;
 }
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### ThemeSlice
+
+`createSlice`を使用してテーマの状態変更処理を定義します。
+
+```ts
+const themeSlice = createSlice({
+  name: "theme",
+  initialState,
+  reducers: {
+    toggleTheme: (state) => {
+      state.darkMode = !state.darkMode;
+    },
+  },
+});
+```
+
+`toggleTheme`を実行することで、`darkMode`の`true` / `false`を切り替えます。
+
+### Store
+
+作成したReducerをRedux Storeに登録します。
+
+```ts
+const store = configureStore({
+  reducer: themeReducer,
+});
+```
+
+### ThemeToggle
+
+`useDispatch`を使用して`toggleTheme` ActionをStoreへ送ります。
+
+```ts
+dispatch(toggleTheme());
+```
+
+### DisplayTheme
+
+`useSelector`を使用して、Storeに保持されている現在のStateを取得します。
+
+```ts
+const darkMode = useSelector(
+  (state: ThemeType) => state.darkMode
+);
+```
+
+取得した`darkMode`の値によってTailwind CSSのクラスを切り替えます。
+
+## Reduxの処理の流れ
+
+```text
+ThemeToggle
+    ↓
+dispatch(toggleTheme())
+    ↓
+Redux Store
+    ↓
+ThemeSlice Reducer
+    ↓
+darkModeを更新
+    ↓
+DisplayTheme
+    ↓
+useSelector()
+    ↓
+現在のStateを取得
+    ↓
+Tailwind CSSを切り替え
+```
+
+## 学習ポイント
+
+* Redux Toolkitの`createSlice`
+* `reducers`と`reducer`の役割
+* Action Creatorと`dispatch`
+* Redux Store
+* `useDispatch`
+* `useSelector`
+* Reduxによる状態管理
+* ReactコンポーネントとReduxの連携
+* Tailwind CSSによる条件付きスタイル変更
+
+## 起動方法
+
+```bash
+npm install
+npm run dev
+```
+
+ブラウザで表示されたURLへアクセスしてください。
