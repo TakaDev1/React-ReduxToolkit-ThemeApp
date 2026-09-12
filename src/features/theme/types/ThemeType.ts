@@ -1,0 +1,3 @@
+interface ThemeType {
+  darkMode: boolean;
+}
