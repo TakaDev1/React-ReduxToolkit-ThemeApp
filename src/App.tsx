@@ -7,10 +7,13 @@ import DisplayTheme from "./features/theme/components/DisplayTheme";
 function App() {
   return (
     <>
-      <Provider store={store}>
-        <DisplayTheme />
-        <ThemeToggle />
-      </Provider>
+      <div>
+        <h1>React-ReduxToolkit-ThemeApp</h1>
+        <Provider store={store}>
+          <DisplayTheme />
+          <ThemeToggle />
+        </Provider>
+      </div>
     </>
   );
 }
