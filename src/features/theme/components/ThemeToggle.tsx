@@ -13,7 +13,12 @@ const ThemeToggle = () => {
   };
   return (
     <div>
-      <button onClick={handleToggle}>テーマ切り替え</button>
+      <button
+        onClick={handleToggle}
+        className={`w-50 py-1 rounded-xl hover:opacity-80 cursor-pointer ${darkmode ? "bg-gray-900 text-white" : "bg-white text-black"}`}
+      >
+        テーマ切り替え
+      </button>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import DisplayTheme from "./features/theme/components/DisplayTheme";
 function App() {
   return (
     <>
-      <div>
+      <div className="min-h-screen bg-gray-500 flex flex-col justify-center items-center">
         <h1>React-ReduxToolkit-ThemeApp</h1>
         <Provider store={store}>
           <DisplayTheme />
